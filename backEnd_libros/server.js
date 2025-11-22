@@ -5,12 +5,12 @@ const path = require('path');
 const conexion = require('./db');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // 👈 IMPORTANTE para Render
 
 app.use(cors());
 app.use(express.json());
 
-// Servir la carpeta del frontend
+// Servir la carpeta del frontend (solo se usa en local)
 app.use(express.static(path.join(__dirname, '../frontEnd_libros')));
 
 // --- RUTAS API ---
@@ -109,26 +109,32 @@ app.post('/api/libros', (req, res) => {
   );
 });
 
-// --- LEVANTAR SERVIDOR ---
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
-});
 // PUT /api/libros/:id -> editar libro
-app.put('/api/libros/:id', async (req, res) => {
+app.put('/api/libros/:id', (req, res) => {
   const { id } = req.params;
   const { titulo, paginas, fecha_publicacion, editorial, id_autor } = req.body;
 
-  try {
-    const [result] = await pool.query(
-      `UPDATE Libros
-       SET titulo = ?, paginas = ?, fecha_publicacion = ?, editorial = ?, id_autor = ?
-       WHERE id_libro = ?`,
-      [titulo, paginas || null, fecha_publicacion || null, editorial || null, id_autor, id]
-    );
+  const sql = `
+    UPDATE Libros
+    SET titulo = ?, paginas = ?, fecha_publicacion = ?, editorial = ?, id_autor = ?
+    WHERE id_libro = ?
+  `;
 
-    res.json({ ok: true, affectedRows: result.affectedRows });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error al actualizar libro' });
-  }
+  conexion.query(
+    sql,
+    [titulo, paginas || null, fecha_publicacion || null, editorial || null, id_autor, id],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error al actualizar libro' });
+      }
+
+      res.json({ ok: true, affectedRows: result.affectedRows });
+    }
+  );
+});
+
+// --- LEVANTAR SERVIDOR ---
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
