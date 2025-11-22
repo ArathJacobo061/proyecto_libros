@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Biblioteca Libros</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Biblioteca Libros</h1>
+    <p>Consulta, busca, agrega y edita libros con sus autores</p>
+
+    <nav class="nav">
+      <button class="nav-btn" data-vista="listado">Ver / Buscar libros</button>
+      <button class="nav-btn" data-vista="nuevo">Agregar autor + libro</button>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <!-- VISTA 1: LISTADO + BUSCADOR + EDICIÓN -->
+    <section class="panel" id="vistaListado">
+      <h2>Buscar libros</h2>
+      <div class="buscador">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Buscar por título o autor..."
+        />
+        <button id="btnBuscar">Buscar</button>
+        <button id="btnLimpiar">Limpiar</button>
+      </div>
+
+      <h3>Listado de libros</h3>
+      <table id="tablaLibros">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Páginas</th>
+            <th>Fecha publicación</th>
+            <th>Editorial</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- filas dinámicas -->
+        </tbody>
+      </table>
+
+      <section class="subpanel" id="panelEditar" style="display:none;">
+        <h3>Editar libro</h3>
+        <form id="formEditarLibro">
+          <input type="hidden" id="editIdLibro" />
+
+          <div class="field">
+            <label for="editTitulo">Título:</label>
+            <input type="text" id="editTitulo" required />
+          </div>
+
+          <div class="field">
+            <label for="editPaginas">Páginas:</label>
+            <input type="number" id="editPaginas" min="1" />
+          </div>
+
+          <div class="field">
+            <label for="editFecha">Fecha publicación:</label>
+            <input type="date" id="editFecha" />
+          </div>
+
+          <div class="field">
+            <label for="editEditorial">Editorial:</label>
+            <input type="text" id="editEditorial" />
+          </div>
+
+          <div class="field">
+            <label for="editAutor">Autor:</label>
+            <select id="editAutor"></select>
+          </div>
+
+          <button type="submit">Guardar cambios</button>
+          <button type="button" id="btnCancelarEdicion">Cancelar</button>
+        </form>
+      </section>
+    </section>
+
+    <!-- VISTA 2: AGREGAR AUTOR + LIBRO JUNTOS -->
+    <section class="panel hidden" id="vistaNuevo">
+      <h2>Agregar autor + libro</h2>
+      <form id="formAutorLibro">
+        <h3>Datos del autor</h3>
+        <div class="field">
+          <label for="nuevoAutorNombre">Nombre:</label>
+          <input type="text" id="nuevoAutorNombre" required />
+        </div>
+        <div class="field">
+          <label for="nuevoAutorApellidos">Apellidos:</label>
+          <input type="text" id="nuevoAutorApellidos" required />
+        </div>
+
+        <h3>Datos del libro</h3>
+        <div class="field">
+          <label for="nuevoTitulo">Título:</label>
+          <input type="text" id="nuevoTitulo" required />
+        </div>
+        <div class="field">
+          <label for="nuevoPaginas">Páginas:</label>
+          <input type="number" id="nuevoPaginas" min="1" />
+        </div>
+        <div class="field">
+          <label for="nuevoFecha">Fecha publicación:</label>
+          <input type="date" id="nuevoFecha" />
+        </div>
+        <div class="field">
+          <label for="nuevoEditorial">Editorial:</label>
+          <input type="text" id="nuevoEditorial" />
+        </div>
+
+        <button type="submit">Guardar autor + libro</button>
+      </form>
+
+      <p id="mensaje" class="mensaje"></p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

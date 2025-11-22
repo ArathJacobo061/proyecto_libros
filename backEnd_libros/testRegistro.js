@@ -1,0 +1,2 @@
+// testRegistro.js
+require('./dbRegistro');
